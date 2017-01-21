@@ -1,9 +1,12 @@
 
 var status = 0;
 var time = 0;
-var LapTime;
+var LapTime; 
+var LableTimeLap = document.getElementById('timeLap');
+var LableTime = document.getElementById('timer');
 
- // on = 1; off = 0
+
+
 
 
 function startStop() {
@@ -28,18 +31,15 @@ function resetLap() {
 		} else {
 			time = 0;
 			resetTimeLap();
+			counter();
 		}
-		document.getElementById('timer').innerHTML = '00:00,00';
-		document.getElementById('timeLap').innerHTML = '00:00,00';
+		LableTime.innerHTML = '00:00,00';
+		LableTimeLap.innerHTML = '00:00,00';
 		document.getElementById('resetBtn').innerHTML = 'Круг';
 }
 
 function resetTimeLap() {
- 	document.getElementById('th1').innerHTML = '&nbsp';
- 	document.getElementById('th2').innerHTML = '&nbsp';
- 	document.getElementById('th3').innerHTML = '&nbsp';
- 	document.getElementById('th4').innerHTML = '&nbsp';
- 	document.getElementById('th5').innerHTML = '&nbsp';
+ 	document.getElementById('tbody').innerHTML = '&nbsp';
  }
 
 function increment() {
@@ -64,8 +64,8 @@ function increment() {
 				mSec = '0' + mSec;
 			}
 			
-			document.getElementById('timer').innerHTML = min + ":" + sec + ":" + mSec;
-			document.getElementById('timeLap').innerHTML = min + ":" + sec + ":" + mSec;
+			LableTime.innerHTML = min + ":" + sec + ":" + mSec;
+			LableTimeLap.innerHTML = min + ":" + sec + ":" + mSec;
 			increment();
 			LapTime = min + ":" + sec + "," + mSec;
 		}, 10)
@@ -74,14 +74,19 @@ function increment() {
 
  function saveLap() {
  	if (status == 1) {
- 		var ArrLap = [];
- 		ArrLap.push(LapTime);
- 		var value = document.getElementById('table').value;
- 		if (value == undefined) {
- 			for (var i = 1;i < 2;) {
- 				document.getElementById('tbody').innerHTML += '<th>' + "Круг" + " " + i + " " + ArrLap;
- 				i++;
- 			}		
- 		}
+ 		var ArrLap = [LapTime];
+ 		document.getElementById('tbody').innerHTML += '<th>' + "Круг" + " " + counter() + " " + ArrLap + " ";	
  	}
- } 
+ }
+
+function makeCounter() {
+		var currentCount = 1;
+			return function () {
+				if (status == 1) {
+ 					return currentCount++;
+ 				} else {
+					currentCount = 1;
+ 				}
+		 	}
+ }
+ 		var counter = makeCounter();
