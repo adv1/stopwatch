@@ -1,7 +1,7 @@
 
 var status = 0;
-var time = 0;
-var LapTime; 
+var time = 0; 
+var GeneralTime; 
 var LableTimeLap = document.getElementById('timeLap');
 var LableTime = document.getElementById('timer');
 
@@ -64,17 +64,18 @@ function increment() {
 				mSec = '0' + mSec;
 			}
 			
-			LableTime.innerHTML = min + ":" + sec + ":" + mSec;
-			LableTimeLap.innerHTML = min + ":" + sec + ":" + mSec;
+			GeneralTime = min + ":" + sec + "," + mSec;
+			LableTime.innerHTML = GeneralTime;
+			LableTimeLap.innerHTML = GeneralTime;
 			increment();
-			LapTime = min + ":" + sec + "," + mSec;
+			
 		}, 10)
 	}
 }
 
  function saveLap() {
  	if (status == 1) {
- 		var ArrLap = [LapTime];
+ 		var ArrLap = [GeneralTime];
  		document.getElementById('tbody').innerHTML += '<th>' + "Круг" + " " + counter() + " " + ArrLap + " ";	
  	}
  }
