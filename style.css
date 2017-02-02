@@ -7,7 +7,6 @@ body{
 .container{
 	text-align: center;
 	align-content: center;
-	margin: center;
 }
 
 h1{
@@ -38,12 +37,13 @@ h3{
 	border: 1px solid  gray; 
 }
 
-dt {
-	white-space:pre;
-	 border-bottom: 2px solid #C0C0C0;
-	 margin-bottom: 5px;
-	 text-align: center;
-	 text-align-all: center;
+.resLine {
+	border-bottom: 2px solid #C0C0C0;
+}
+
+.curLaps {
+	  color: gray;
+	  margin: 2px 100px 2px 0;
 }
 
 .button {
@@ -63,6 +63,4 @@ dt {
 	margin-top: 10px;
 	margin-bottom: 10px;
 	color: green;
-}
-#resetBtn{
 }

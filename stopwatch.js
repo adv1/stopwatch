@@ -53,7 +53,7 @@ function Timer() {
 
     function saveLap() {
     	currentLapNumber++;
-    	lapResults.innerHTML += '<dt>' + "Круг" + " " + currentLapNumber + " " + '&nbsp' + prepareDisplayedTime(lapCurrentTime) + " " + '</dt>';
+    	lapResults.innerHTML += '<div class="resLine">' + '<span class="curLaps">' + "Круг" + " " + currentLapNumber + " " + '</span>'  + '<span class="curTime">' + prepareDisplayedTime(lapCurrentTime) + " " + '</span>' + '</div>';
     	lapCurrentTime = 0;
     }
 
