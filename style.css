@@ -12,7 +12,6 @@ body{
 h1{
 	font-size: 4em;
 	text-align: center;
-	font-family: Poiret One;
 }
 
 h3{
@@ -43,7 +42,7 @@ h3{
 
 .curLaps {
 	  color: gray;
-	  margin: 2px 100px 2px 0;
+	  margin: 2px 100px 5px 0;
 }
 
 .button {
