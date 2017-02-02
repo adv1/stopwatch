@@ -1,93 +1,120 @@
+function Timer() {
+	var timerStatus = false,
+    currentLapNumber = 0,
+    timerCurrentTime = 0,
+    lapCurrentTime = 0,
+    labelTimeLap = document.getElementById('timeLap'),
+    labelTime = document.getElementById('timer'),
+    startButton = document.getElementById('startBtn'),
+    resetButton = document.getElementById('resetBtn'),
+    lapResults = document.querySelector('.lap-results'),
+    lapIntervalId,
+    mainTimerIntervalId;
 
-var status = 0;
-var time = 0; 
-var GeneralTime; 
-var LableTimeLap = document.getElementById('timeLap');
-var LableTime = document.getElementById('timer');
 
+    this.onStartButtoClick = function() {
+    	if (!timerStatus) {
+    		onStartTimer()
+    	} else {
+    		onStopTimer()
+    	}
+    }
 
+    function onStartTimer() {
+    	timerStatus = true;
+    	mainTimerIntervalId = initMainTimer(labelTime, 10);
+    	lapIntervalId = initLapTimer(labelTimeLap, 10);
 
+    	startButton.innerHTML = 'Стоп';
+    	startButton.style.color = 'red';
+    	resetButton.innerHTML = 'Круг';
+    }
 
+    function onStopTimer() {
+    	timerStatus = false;
+    	startButton.style.color = 'green';
+    	startButton.innerHTML = 'Старт';
+    	resetButton.innerHTML = 'Сброс';
+    	clearTimers();
+    }
 
-function startStop() {
-	if (status == 0) {
-		status = 1;
-		increment();
-		document.getElementById('startBtn').innerHTML = 'Стоп';
-		document.getElementById('startBtn').style.color = 'red';
-	} else {
-		status = 0;
-		document.getElementById('startBtn').style.color = 'green';
-		document.getElementById('startBtn').innerHTML = 'Старт';
-		document.getElementById('resetBtn').innerHTML = 'Сброс';
-	}
-	
+    function clearTimers() {
+    	clearInterval(mainTimerIntervalId);
+    	clearInterval(lapIntervalId);
+    }
+
+    this.onResetButtonClick = function() {
+    	if (timerStatus) {
+    		saveLap()
+    	} else {
+    		reset()
+    	}
+    }
+
+    function saveLap() {
+    	currentLapNumber++;
+    	lapResults.innerHTML += '<dd>' + "Круг " + " " + currentLapNumber +  " " + prepareDisplayedTime(lapCurrentTime) + " " + '</dd>';
+    	lapCurrentTime = 0;
+    }
+
+    function reset() {
+    	labelTime.innerHTML = '00:00,00';
+    	labelTimeLap.innerHTML = '00:00,00';
+    	resetButton.innerHTML = 'Круг';
+    	lapResults.innerHTML = '';
+    	currentLapNumber = 0;
+    	timerCurrentTime = 0;
+    	lapCurrentTime = 0;
+    	clearTimers()
+    }
+
+    function initMainTimer(timerElement, interval) {
+    	return setInterval(function() {
+    		timerCurrentTime += interval;
+
+    		timerElement.innerHTML = prepareDisplayedTime(timerCurrentTime);
+    	}, interval)
+    }
+
+    function initLapTimer(timerElement, interval) {
+    	return setInterval(function() {
+    		lapCurrentTime += interval;
+
+    		timerElement.innerHTML = prepareDisplayedTime(lapCurrentTime);
+    	}, interval)
+    }
+
+    function prepareDisplayedTime(time) {
+    	var milliSeconds = time % 1000,
+    		seconds = Math.floor((time / 1000) % 60) ,
+    		minutes = Math.floor((time / 1000 / 60) % 60);
+
+    		if (minutes < 10) {
+    			minutes = '0' + minutes;
+    		}
+			if (seconds >= 60) {
+				seconds = seconds % 60;
+			}
+    		if (seconds < 10) {
+    			seconds = '0' + seconds;
+    		}
+    		if (milliSeconds < 10) {
+    			milliSeconds = '0' + milliSeconds;
+    		}
+    		if (milliSeconds > 99 ) {
+    			milliSeconds = milliSeconds / 10;
+    		}
+    	return minutes + ':' + seconds + ',' + milliSeconds;
+    }
+
+};
+
+var stopWatch = new Timer();
+
+function startClick() {
+	stopWatch.onStartButtoClick();
 }
 
-
-function resetLap() {
-		if (status == 1) {
-			saveLap();
-		} else {
-			time = 0;
-			resetTimeLap();
-			counter();
-		}
-		LableTime.innerHTML = '00:00,00';
-		LableTimeLap.innerHTML = '00:00,00';
-		document.getElementById('resetBtn').innerHTML = 'Круг';
+function resetClick() {
+	stopWatch.onResetButtonClick();
 }
-
-function resetTimeLap() {
- 	document.getElementById('tbody').innerHTML = '&nbsp';
- }
-
-function increment() {
-	if (status == 1) {
-		setTimeout(function() {
-			time++;
-		var min = Math.floor(time/100/60);
-		var sec = Math.floor(time/100);
-		var mSec = time % 100;
-
-			if (min < 10) {
-				min = '0' + min;
-			}
-			if (sec >= 60) {
-				sec = sec % 60;
-			}
-			if (sec < 10) {
-				sec = '0' + sec;
-			}
-
-			if (mSec < 10) {
-				mSec = '0' + mSec;
-			}
-			
-			GeneralTime = min + ":" + sec + "," + mSec;
-			LableTime.innerHTML = GeneralTime;
-			LableTimeLap.innerHTML = GeneralTime;
-			increment();
-			
-		}, 10)
-	}
-}
-
- function saveLap() {
- 	if (status == 1) {
- 		var ArrLap = [GeneralTime];
- 		document.getElementById('tbody').innerHTML += '<th>' + "Круг" + " " + counter() + " " + ArrLap + " ";	
- 	}
- }
-
-function makeCounter() {
-		var currentCount = 1;
-			return function () {
-				if (status == 1) {
- 					return currentCount++;
- 				} else {
-					currentCount = 1;
- 				}
-		 	}
- }
- 		var counter = makeCounter();
